@@ -1,16 +1,21 @@
 {
-  "name": "Example 0: Hello World in Console",
-  "version": "0.0.1",
-  "manifest_version": 2,
-  "description": "This is an example to print Hello World in Chrome console",
-  "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
-  },
-  "background": {
-    "scripts": [
-      "background.js"
-    ]
-  }
+    "manifest_version": 2,
+    "applications": {
+      "gecko": {
+        "id": "trellowip@bobchao.net"
+      }
+    },
+    "content_scripts": [
+        {
+            "matches": [ "https://trello.com/*" ],
+            "css": [ "trellowip.css" ],
+            "js": [ "jquery-1.7.1.min.js", "trellowip.js" ]
+        }
+    ],
+    "description": "Adds work-in-progress limits to Trello lists supporting a Kanban workflow.",
+    "icons": {
+        "128": "trellowipicon.png"
+    },
+    "name": "Kanban WIP for Trello",
+    "version": "0.3.3"
 }

@@ -116,7 +116,10 @@ function List(el) {
         $listHeader.contents().each(function() {
             if(this.nodeType === 3) {
                 var listName = this.nodeValue;
+                //表示したtrelloのすべてのリスト要素を取得する
+                var childCard = $list.children();
                 var matches = listMatch.exec(listName);
+                //console.log(childCard);
 		cardMinLimit = cardMaxLimit = null;
 		if(!matches || matches.length != 3) {	return; }
 		if(typeof matches[2] === 'undefined') {
@@ -141,9 +144,10 @@ function List(el) {
                 if($(this).parent().hasClass('card-composer')) return true;    
                 cardCount++;
             });
-            
+
             if(cardCount > cardMaxLimit || (cardMinLimit != null && cardCount < cardMinLimit)) {
-                $list.addClass('over-limit');
+                //$list.addClass('over-limit');
+               //var res = confirm("数がおおいよ！");
             } else if (cardCount == cardMaxLimit || (cardMinLimit != null && cardCount == cardMinLimit)) {
                 $list.addClass('at-limit');
             }

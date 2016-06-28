@@ -44,6 +44,17 @@ $(function() {
         });
     });
 
+    q = new Object(
+    {
+        cnt : 0,
+        push:function(str){
+            this.cnt += 1;
+            if(this.cnt===1) {
+                alert(str);
+            }
+        }
+    });
+
     function observeLists(lists) {
         for(var i = 0, len = lists.length; i < len; i++) {
             listObserver.observe(lists[i], { childList: true, subtree: true });
@@ -115,41 +126,45 @@ function List(el) {
 
         $listHeader.contents().each(function() {
             if(this.nodeType === 3) {
-                var listName = this.nodeValue;
+                listName = this.nodeValue;
                 //表示したtrelloのすべてのリスト要素を取得する
                 var childCard = $list.children();
+                var childElementCount = childCard[1].childElementCount;
+
                 var matches = listMatch.exec(listName);
-                //console.log(childCard);
-		cardMinLimit = cardMaxLimit = null;
-		if(!matches || matches.length != 3) {	return; }
-		if(typeof matches[2] === 'undefined') {
+                cardMinLimit = cardMaxLimit = null;
+                if(!matches || matches.length != 3) {	return; }
+                if(typeof matches[2] === 'undefined') {
                     cardMaxLimit = matches[1];
                 } else {
                     cardMinLimit = matches[1];
                     cardMaxLimit = matches[2];
                 }
+
             }
         });
     }
-
     this.checkWipLimit = function() {
         $list.removeClass('over-limit');
         $list.removeClass('at-limit');
+        $list.removeClass('green-limit');
 
         calcWipLimit();
-        
+
         if(cardMaxLimit != null) {
             var cardCount = 0;
             $list.find('.list-card').not('.hide').each(function() {
                 if($(this).parent().hasClass('card-composer')) return true;    
                 cardCount++;
             });
+            if(cardCount > cardMaxLimit && listName.startsWith('doing')) {
+                $list.addClass('over-limit');
+                q.push('doingがWIPを超えています。');
 
-            if(cardCount > cardMaxLimit || (cardMinLimit != null && cardCount < cardMinLimit)) {
-                //$list.addClass('over-limit');
-               //var res = confirm("数がおおいよ！");
             } else if (cardCount == cardMaxLimit || (cardMinLimit != null && cardCount == cardMinLimit)) {
                 $list.addClass('at-limit');
+            } else if (cardCount < cardMaxLimit ) {
+                $list.addClass('green-limit');
             }
         }
     };

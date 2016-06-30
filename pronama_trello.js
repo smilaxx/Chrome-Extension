@@ -157,9 +157,9 @@ function List(el) {
                 if($(this).parent().hasClass('card-composer')) return true;    
                 cardCount++;
             });
-            if(cardCount > cardMaxLimit && listName.startsWith('doing')) {
+            if(cardCount > cardMaxLimit) {
                 $list.addClass('over-limit');
-                q.push('doingがWIPを超えています。');
+                q.push(listName.replace("[" + cardMaxLimit + "]", "") + 'がWIPを超えています。');
 
             } else if (cardCount == cardMaxLimit || (cardMinLimit != null && cardCount == cardMinLimit)) {
                 $list.addClass('at-limit');
